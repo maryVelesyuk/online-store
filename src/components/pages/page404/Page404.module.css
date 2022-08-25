@@ -1,0 +1,13 @@
+.error_message {
+  text-align: center;
+  font-weight: bold;
+  font-size: 24px;
+  color: red;
+}
+.back {
+  display: block;
+  text-align: center;
+  font-weight: bold;
+  font-size: 24px;
+  margin-top: 30px;
+}
