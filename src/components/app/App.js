@@ -2,28 +2,19 @@ import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Header } from "../header/Header";
 import { HomePage, AboutStorePage, ProductPage, Page404 } from "../pages/index";
-import { useState, useContext } from "react";
-import { Modal } from "../modal/Modal";
-import { Cart } from "../cart/Cart";
-import { LoginContext } from "../hok/LoginProvider";
+import { useState } from "react";
 
 function App() {
-  const [isModalActive, setIsModalActive] = useState(false);
   const [cart, setCart] = useState([]);
-  const { isLoggedIn } = useContext(LoginContext);
 
   const addToCart = (count, price) => {
     setCart([...cart, { count: count, price: price }]);
   };
-  const switchModalActive = () => {
-    setIsModalActive(!isModalActive);
-  };
 
   return (
-    <Router>
-      <div className="app">
-        <Header setIsModalActive={setIsModalActive} />
-        {isLoggedIn && <Cart cart={cart} />}
+    <div className="app">
+      <Router>
+        <Header cart={cart} />
         <main>
           <Routes>
             <Route
@@ -32,15 +23,15 @@ function App() {
             />
             <Route path="about" element={<AboutStorePage />} />
             <Route
-              path=":productId"
+              path="products/:productId"
               element={<ProductPage addToCart={addToCart} />}
             />
+            {/* <Route path="/cart" element={<Page404 />} /> */}
             <Route path="*" element={<Page404 />} />
           </Routes>
         </main>
-        {isModalActive && <Modal switchModalActive={switchModalActive} />}
-      </div>
-    </Router>
+      </Router>
+    </div>
   );
 }
 

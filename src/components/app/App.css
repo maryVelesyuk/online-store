@@ -47,3 +47,10 @@ main {
   margin-top: 50px;
   position: relative;
 }
+
+.active_nav_link {
+  color: purple;
+}
+.nav_link {
+  color: inherit;
+}

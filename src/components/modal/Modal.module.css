@@ -9,6 +9,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 100;
 }
 .modal_content {
   position: relative;
@@ -29,25 +30,11 @@ form {
   justify-content: center;
   flex-direction: column;
 }
-.login_form_input {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  box-sizing: border-box;
-}
 .buttons_block {
   width: 100%;
   margin-top: 20px;
   display: flex;
   justify-content: space-between;
-}
-.buttons_block button {
-  width: 180px;
-  font-size: 14px;
-  padding: 12px 20px;
-  margin: 8px 0;
-  box-sizing: border-box;
-  cursor: pointer;
 }
 
 .error {

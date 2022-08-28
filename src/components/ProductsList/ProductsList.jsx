@@ -12,25 +12,26 @@ export const ProductsList = ({ addToCart }) => {
   const { loadingData, requestError, getAllProducts } = ProductsService();
 
   useEffect(() => {
-    getAllProducts().then((products) => setProducts(products));
+    getAllProducts().then((productsResponse) =>
+      setProducts([...products, ...productsResponse])
+    );
   }, []);
 
+  if (loadingData) return <Spinner />;
+  if (requestError) return <Page404 error={requestError} />;
+
   return (
-    <>
-      {loadingData && <Spinner />}
-      {requestError && <Page404 error={requestError} />}
-      <div className={s.main_container}>
-        {products.map((product) => {
-          return (
-            <Product
-              key={product.id}
-              {...product}
-              isLoggedIn={isLoggedIn}
-              addToCart={addToCart}
-            />
-          );
-        })}
-      </div>
-    </>
+    <div className={s.main_container}>
+      {products.map((product) => {
+        return (
+          <Product
+            key={product.id}
+            {...product}
+            isLoggedIn={isLoggedIn}
+            addToCart={addToCart}
+          />
+        );
+      })}
+    </div>
   );
 };

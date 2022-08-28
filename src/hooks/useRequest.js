@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 export const useRequest = () => {
   const [loadingData, setLoadingData] = useState(false);
   const [requestError, setRequestError] = useState(null);
 
-  //??? здесь можно применять useCallback?
   const request = async (url) => {
     try {
       setLoadingData(true);

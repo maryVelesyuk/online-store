@@ -8,9 +8,11 @@ export const Page404 = ({ error = "" }) => {
     <div>
       <ErrorMessage />
       <p className={s.error_message}>{error ? error : "Page doesn't exist"}</p>
-      <Link className={s.back} to="/">
-        Back to home page
-      </Link>
+      {!error && (
+        <Link className={s.back} to="/">
+          Back to home page
+        </Link>
+      )}
     </div>
   );
 };

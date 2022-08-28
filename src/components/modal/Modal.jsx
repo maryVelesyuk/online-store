@@ -4,6 +4,8 @@ import s from "./Modal.module.css";
 import { LoginContext } from "../hok/LoginProvider";
 import { authorizedUser } from "../../constants/authorizedUser";
 import SvgIcons from "../../icons/SvgIcons";
+import InputField from "../inputField/InputField";
+import Button from "../button/Button";
 
 export const Modal = ({ switchModalActive }) => {
   return (
@@ -45,28 +47,26 @@ const LogInForm = ({ switchModalActive }) => {
   return (
     <form onSubmit={handleSubmit}>
       <h1>Login</h1>
-      <input
+      <InputField
         type="email"
         name="email"
         value={creds.email}
         onChange={handleChange}
         onFocus={handleFocus}
         placeholder="email"
-        className={s.login_form_input}
       />
-      <input
+      <InputField
         type="password"
         name="pass"
         value={creds.pass}
         onChange={handleChange}
         onFocus={handleFocus}
         placeholder="password"
-        className={s.login_form_input}
       />
       {error && <div className={s.error}>{error}</div>}
       <div className={s.buttons_block}>
-        <button onClick={switchModalActive}>Cancel</button>
-        <button type="submit">Sign In</button>
+        <Button onClick={switchModalActive} text="Cancel" />
+        <Button type="submit" text="Sign in" />
       </div>
       <button className={s.close} onClick={switchModalActive}>
         <SvgIcons id="close" />

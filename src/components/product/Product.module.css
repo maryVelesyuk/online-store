@@ -32,10 +32,6 @@
 .product_price {
   margin-bottom: 8px;
 }
-.product_btns button {
-  width: 100%;
-  padding: 12px 20px;
-}
 .unauthorised_user_text {
   color: red;
   font-size: 16px;

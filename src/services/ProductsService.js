@@ -5,14 +5,12 @@ const ProductsService = () => {
     useRequest();
 
   const getAllProducts = async () => {
-    const products = await request("https://api.escuelajs.co/api/v1/products");
+    const products = await request(`https://fakestoreapi.com/products`);
     return products;
   };
 
   const getProduct = async (id) => {
-    const product = await request(
-      `https://api.escuelajs.co/api/v1/products/${id}`
-    );
+    const product = await request(`https://fakestoreapi.com/products/${id}`);
     return product;
   };
   return {
