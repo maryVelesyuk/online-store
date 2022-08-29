@@ -21,7 +21,8 @@ export const ProductsList = () => {
   const showMore = () => {
     dispatch(fetchProducts(limit));
   };
-  // isShowMoreBtnActive - если кол-во товаров кратно 8, показывать кнопку ShowMore.
+  // isShowMoreBtnActive - если кол-во товаров, которое вернуло api, кратно 8,
+  // показывать кнопку ShowMore.
   // в этом кейсе работает, но если общее количество товаров будет кратно 8,
   // кнопка не будет скрываться. как еще можно проверить, что все товары уже загружены???
   let isShowMoreBtnActive = true;
