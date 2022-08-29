@@ -1,9 +1,17 @@
-import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Button from "../button/Button";
+import { addItemToCart } from "../../store/slices/cartSlice";
 import s from "./Product.module.css";
 
-export const Product = ({ id, title, price, image, isLoggedIn, addToCart }) => {
+export const Product = ({ id, title, price, image }) => {
+  const dispatch = useDispatch();
+  const { isAuth } = useSelector((state) => state.user);
+
+  const addToCart = () => {
+    dispatch(addItemToCart({ id: id, title: title, price: price, count: 1 }));
+  };
+
   return (
     <div className={s.product}>
       <div className={s.product_img}>
@@ -16,9 +24,9 @@ export const Product = ({ id, title, price, image, isLoggedIn, addToCart }) => {
         </div>
         <div className={s.product_price}>{price}$</div>
       </div>
-      {isLoggedIn ? (
+      {isAuth ? (
         <div className={s.product_btns}>
-          <Button onClick={() => addToCart(1, price)} text="Add to Cart" />
+          <Button onClick={addToCart} text="Add to Cart" />
         </div>
       ) : (
         <div className={s.unauthorised_user_text}>

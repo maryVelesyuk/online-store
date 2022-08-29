@@ -1,37 +1,45 @@
-import React, { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import ProductsService from "../../../services/ProductsService";
 import Button from "../../button/Button";
-import { LoginContext } from "../../hok/LoginProvider";
 import Spinner from "../../spinner/Spinner";
 import { Page404 } from "../page404/Page404";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProduct } from "../../../store/slices/productSlice";
+import { addItemToCart } from "../../../store/slices/cartSlice";
 import s from "./ProductPage.module.css";
 
-export const ProductPage = ({ addToCart }) => {
-  const [product, setProduct] = useState({});
+export const ProductPage = () => {
   const [count, setCount] = useState(1);
   const { productId } = useParams();
-  const { isLoggedIn } = useContext(LoginContext);
-  const { loadingData, requestError, getProduct } = ProductsService();
   const navigate = useNavigate();
   const goHome = () => navigate("/");
+  const dispatch = useDispatch();
+  const { product, loading, error } = useSelector((state) => state.product);
+  const { isAuth } = useSelector((state) => state.user);
+  const { id, title, price, description, image } = product;
 
   useEffect(() => {
-    getProduct(productId).then((product) => setProduct(product));
+    dispatch(fetchProduct(productId));
   }, [productId]);
 
-  if (loadingData) return <Spinner />;
-  if (requestError) return <Page404 />;
+  const addToCart = () => {
+    dispatch(
+      addItemToCart({ id: id, title: title, price: price, count: +count })
+    );
+  };
+
+  if (loading) return <Spinner />;
+  if (error) return <Page404 />;
 
   return (
     <div className={s.product_page}>
       <div className={s.product_imgs}>
-        <img src={product.image} alt={product.title} />
+        <img src={image} alt={title} />
       </div>
-      <div className={s.product_title}>{product.title}</div>
-      <div className={s.product_price}>{product.price}$</div>
-      <div className={s.product_description}>{product.description}</div>
-      {isLoggedIn ? (
+      <div className={s.product_title}>{title}</div>
+      <div className={s.product_price}>{price}$</div>
+      <div className={s.product_description}>{description}</div>
+      {isAuth ? (
         <div className={s.add_block}>
           <input
             type="number"
@@ -42,10 +50,7 @@ export const ProductPage = ({ addToCart }) => {
             min="1"
             max="10"
           ></input>
-          <Button
-            onClick={() => addToCart(+count, product.price)}
-            text="Add to Cart"
-          />
+          <Button onClick={addToCart} text="Add to Cart" />
         </div>
       ) : (
         <div className={s.error}>

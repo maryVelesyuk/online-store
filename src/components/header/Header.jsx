@@ -1,21 +1,20 @@
-import { useContext, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { useState } from "react";
+import { Link, NavLink, useMatch } from "react-router-dom";
 import s from "./Header.module.css";
-import { LoginContext } from "../hok/LoginProvider";
 import { Cart } from "../cart/Cart";
 import { Modal } from "../modal/Modal";
 import Button from "../button/Button";
+import { logOut } from "../../store/slices/userSlice";
+import { useDispatch, useSelector } from "react-redux";
 
-export const Header = ({ cart }) => {
-  const { isLoggedIn, setIsLogin } = useContext(LoginContext);
+export const Header = () => {
   const [isModalActive, setIsModalActive] = useState(false);
+  const match = useMatch("/cart");
+  const dispatch = useDispatch();
+  const { isAuth } = useSelector((state) => state.user);
 
   const switchModalActive = () => {
     setIsModalActive(!isModalActive);
-  };
-
-  const switchAuth = () => {
-    setIsLogin(!isLoggedIn);
   };
 
   return (
@@ -50,10 +49,12 @@ export const Header = ({ cart }) => {
               </NavLink>
             </li>
           </ul>
-          {isLoggedIn ? (
+          {isAuth ? (
             <Button
               className={s.auth_btn}
-              onClick={switchAuth}
+              onClick={() => {
+                dispatch(logOut());
+              }}
               text="Log Out"
             />
           ) : (
@@ -65,7 +66,7 @@ export const Header = ({ cart }) => {
           )}
         </nav>
       </header>
-      {isLoggedIn && <Cart cart={cart} />}
+      {isAuth && !match && <Cart />}
       {isModalActive && <Modal switchModalActive={switchModalActive} />}
     </>
   );

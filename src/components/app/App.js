@@ -1,32 +1,20 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Header } from "../header/Header";
-import { HomePage, AboutStorePage, ProductPage, Page404 } from "../pages/index";
-import { useState } from "react";
+import { AboutStorePage, ProductPage, Page404, CartPage } from "../pages/index";
+import { ProductsList } from "../ProductsList/ProductsList";
 
 function App() {
-  const [cart, setCart] = useState([]);
-
-  const addToCart = (count, price) => {
-    setCart([...cart, { count: count, price: price }]);
-  };
-
   return (
     <div className="app">
       <Router>
-        <Header cart={cart} />
+        <Header />
         <main>
           <Routes>
-            <Route
-              path="/"
-              element={<HomePage addToCart={addToCart} cart={cart} />}
-            />
+            <Route path="/" element={<ProductsList />} />
             <Route path="about" element={<AboutStorePage />} />
-            <Route
-              path="products/:productId"
-              element={<ProductPage addToCart={addToCart} />}
-            />
-            {/* <Route path="/cart" element={<Page404 />} /> */}
+            <Route path="products/:productId" element={<ProductPage />} />
+            <Route path="/cart" element={<CartPage />} />
             <Route path="*" element={<Page404 />} />
           </Routes>
         </main>

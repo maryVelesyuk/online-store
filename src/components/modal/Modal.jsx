@@ -1,11 +1,12 @@
-import React, { useState, useContext } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import s from "./Modal.module.css";
-import { LoginContext } from "../hok/LoginProvider";
 import { authorizedUser } from "../../constants/authorizedUser";
 import SvgIcons from "../../icons/SvgIcons";
 import InputField from "../inputField/InputField";
 import Button from "../button/Button";
+import { useDispatch } from "react-redux";
+import { logIn } from "../../store/slices/userSlice";
 
 export const Modal = ({ switchModalActive }) => {
   return (
@@ -19,9 +20,9 @@ export const Modal = ({ switchModalActive }) => {
 
 const LogInForm = ({ switchModalActive }) => {
   const [creds, setCreds] = useState({ email: "", pass: "" });
-  const { setIsLogin } = useContext(LoginContext);
   const [error, setError] = useState("");
   let navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -29,13 +30,14 @@ const LogInForm = ({ switchModalActive }) => {
       creds.email === authorizedUser.email &&
       creds.pass === authorizedUser.pass
     ) {
-      setIsLogin(true);
+      dispatch(logIn({ email: creds.email, pass: creds.pass }));
       switchModalActive();
       navigate("/");
     } else {
       setError("User is not found");
     }
   };
+
   const handleChange = (e) => {
     setCreds({ ...creds, [e.target.name]: e.target.value });
   };

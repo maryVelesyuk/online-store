@@ -4,4 +4,18 @@
   width: 100%;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
   padding: 20px;
+  display: flex;
+  align-items: center;
+}
+.cart_icon {
+  text-align: center;
+  margin-right: 20px;
+}
+.cart_icon a {
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+}
+.cart_icon svg:hover {
+  fill: purple;
 }

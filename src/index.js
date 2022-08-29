@@ -1,12 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./components/app/App";
-import { LoginProvider } from "./components/hok/LoginProvider";
+import { Provider } from "react-redux";
+import store from "./store";
 import "./index.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <LoginProvider>
+  <Provider store={store}>
     <App />
-  </LoginProvider>
+  </Provider>
 );
