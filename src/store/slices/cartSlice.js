@@ -7,18 +7,22 @@ const cartSlice = createSlice({
   },
   reducers: {
     addItemToCart(state, action) {
-      //???Здесь описана логика, чтобы если несколько раз добавляешь один и тот же товар,
-      // он не дублировался несколько раз в карзине, а его количество складывалось.
-      //можно эту логику оставить в reducer или ее нужно куда-то выносить???
       let count = +action.payload.count;
-      state.cart.forEach((item) => {
-        if (item.id === action.payload.id) {
-          count += item.count;
-        }
-      });
-      state.cart = state.cart
-        .filter((item) => item.id !== action.payload.id)
-        .concat({ ...action.payload, count: count });
+      let isItemInCart = state.cart.find(
+        (item) => item.id === action.payload.id
+      );
+      if (isItemInCart) {
+        state.cart.forEach((item) => {
+          if (item.id === action.payload.id) {
+            count += item.count;
+          }
+        });
+        state.cart = state.cart
+          .filter((item) => item.id !== action.payload.id)
+          .concat({ ...action.payload, count: count });
+      } else {
+        state.cart = state.cart.concat({ ...action.payload });
+      }
     },
     deleteItemFromCart(state, action) {
       state.cart = state.cart.filter((item) => item.id !== action.payload);
@@ -26,9 +30,20 @@ const cartSlice = createSlice({
     clearCart(state) {
       state.cart = [];
     },
+    incrementCount(state, action) {
+      state.cart.find((item) => item.id === action.payload).count++;
+    },
+    decrementCount(state, action) {
+      state.cart.find((item) => item.id === action.payload).count--;
+    },
   },
 });
 
 export default cartSlice.reducer;
-export const { addItemToCart, deleteItemFromCart, clearCart } =
-  cartSlice.actions;
+export const {
+  addItemToCart,
+  deleteItemFromCart,
+  clearCart,
+  incrementCount,
+  decrementCount,
+} = cartSlice.actions;

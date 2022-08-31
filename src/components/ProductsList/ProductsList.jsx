@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Product } from "../product/Product";
 import Spinner from "../spinner/Spinner";
 import { Page404 } from "../pages";
@@ -8,12 +8,12 @@ import Button from "../button/Button";
 import s from "./ProductsList.module.css";
 
 export const ProductsList = () => {
+  const [isShowMoreBtnActive, setIsShowMoreBtnActive] = useState(true);
   const dispatch = useDispatch();
   const { products, loading, error, limit } = useSelector(
     (state) => state.products
   );
-  //???Видела, что в зависимости useEffect передают dispatch.
-  //Это нормальная практика или лучше так не делать?
+
   useEffect(() => {
     dispatch(fetchProducts(limit));
   }, []);
@@ -21,14 +21,12 @@ export const ProductsList = () => {
   const showMore = () => {
     dispatch(fetchProducts(limit));
   };
-  // isShowMoreBtnActive - если кол-во товаров, которое вернуло api, кратно 8,
-  // показывать кнопку ShowMore.
-  // в этом кейсе работает, но если общее количество товаров будет кратно 8,
-  // кнопка не будет скрываться. как еще можно проверить, что все товары уже загружены???
-  let isShowMoreBtnActive = true;
-  if (products.length % 8 !== 0) {
-    isShowMoreBtnActive = false;
-  }
+
+  useEffect(() => {
+    if (products.length % 8 !== 0) {
+      setIsShowMoreBtnActive(false);
+    }
+  }, [products]);
 
   if (loading) return <Spinner />;
   if (error) return <Page404 error={error} />;
